@@ -26,3 +26,5 @@ MANIFEST
 /data
 /dataset
 .vscode
+/logs
+/outputs
