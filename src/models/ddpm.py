@@ -33,7 +33,11 @@ class DDPM(nn.Module):
         _ts = torch.randint(1, self.n_T + 1, (x.shape[0],)).to(x.device)
         eps = torch.randn_like(x)
 
-        x_t, _ = q_sample(x, _ts, self.schedules, eps)
+        """
+        Error: RuntimeError: indices should be either on cpu or on the same device as the indexed tensor (cpu)
+
+        """
+        x_t, _ = q_sample(x, _ts, self.sqrtab, self.sqrtmab, eps)
 
         predicted_eps = self.eps_model(x_t, _ts / self.n_T)
 

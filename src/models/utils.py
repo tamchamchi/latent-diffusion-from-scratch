@@ -60,7 +60,7 @@ def ddpm_schedules(beta1: float, beta2: float, T: int) -> dict[str, torch.Tensor
     }
 
 
-def q_sample(x_0, t, noise_schedule_dict, noise=None):
+def q_sample(x_0, t, sqrtab, sqrtmab, noise=None):
     """Add Gaussian noise to image x_0 at timestep t and return noisy image x_t."""
 
     # Generate random Gaussian noise if not provided
@@ -95,9 +95,12 @@ def q_sample(x_0, t, noise_schedule_dict, noise=None):
     # sqrtab = noise_schedule_dict["sqrtab"][t].unsqueeze(1).unsqueeze(2).unsqueeze(3)
     # sqrtmab = noise_schedule_dict["sqrtmab"][t].unsqueeze(1).unsqueeze(2).unsqueeze(3)
 
-    sqrtab = noise_schedule_dict["sqrtab"][t, None, None, None]
-    sqrtmab = noise_schedule_dict["sqrtmab"][t, None, None, None]
+    # sqrtab = noise_schedule_dict["sqrtab"][t, None, None, None]
+    # sqrtmab = noise_schedule_dict["sqrtmab"][t, None, None, None]
 
-    x_t = sqrtab * x_0 + sqrtmab * noise
+    _sqrtab = sqrtab[t].view(-1, 1, 1, 1)
+    _sqrtmab = sqrtmab[t].view(-1, 1, 1, 1)
+
+    x_t = _sqrtab * x_0 + _sqrtmab * noise
 
     return x_t, noise
