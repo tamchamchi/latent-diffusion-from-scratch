@@ -15,12 +15,11 @@ class Config(BaseSettings):
 
     # training config
     device: str = "cuda:0"
-    n_epoch: int = 10
-    batch_size: int = 512
+    n_epoch: int = 100
+    batch_size: int = 256
     lr: float = 1e-5
-    num_workers: int = 8
-    load_pth: str | None = None
-    log_interval: int = 10
+    num_workers: int = 4
+    log_interval: int = 30
 
     # path config
     data_dir: str = "./data"
@@ -31,6 +30,7 @@ class Config(BaseSettings):
     os.makedirs(log_dir, exist_ok=True)
     os.makedirs(output_dir, exist_ok=True)
 
+    load_pth: str = os.path.join(output_dir, "ddpm_cifar.pth")
 
 def get_config() -> Config:
     """

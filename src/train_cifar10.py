@@ -33,6 +33,7 @@ def train_cifar10(config) -> None:
     ddpm = DDPM(eps_model=eps_model, betas=config.beta, n_T=config.n_T)
 
     if config.load_pth is not None:
+        logger.info(f"Loading model from {config.load_pth}...")
         ddpm.load_state_dict(torch.load(config.load_pth))
 
     ddpm.to(config.device)
